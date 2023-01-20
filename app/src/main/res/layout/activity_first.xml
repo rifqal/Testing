@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstActivity">
+
+    <EditText
+        android:id="@+id/edtTxtName"
+        android:layout_width="409dp"
+        android:layout_height="53dp"
+        android:ems="10"
+        android:hint="Enter your name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/edtYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.82" />
+
+    <EditText
+        android:id="@+id/edtYear"
+        android:layout_width="409dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="101dp"
+        android:ems="10"
+        android:hint="Your year of birth"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/btnMe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.834" />
+
+    <TextView
+        android:id="@+id/txtvwAge"
+        android:layout_width="409dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="376dp"
+        android:text="This is First Activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnMe"
+        android:layout_width="409dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="189dp"
+        android:onClick="fnGreet"
+        android:text="CLICK ME!"
+        app:layout_constraintBottom_toTopOf="@+id/txtvwAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.836" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="191dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="205dp"
+        android:onClick="fnThreadActivity"
+        android:text="To New Activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnGoNext"
+        android:layout_width="220dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="548dp"
+        android:layout_marginEnd="192dp"
+        android:onClick="fnGoNext"
+        android:text="To Registration Activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="142dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="603dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

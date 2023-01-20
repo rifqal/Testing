@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="fnTakePic"
+    tools:context=".ThreadedActivity">
+
+    <ImageView
+        android:id="@+id/imgVwPic"
+        android:layout_width="165dp"
+        android:layout_height="178dp"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="105dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
+
+    <Button
+        android:id="@+id/btnTakePic"
+        android:layout_width="197dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="384dp"
+        android:onClick="fnTakePic"
+        android:text="Take Picture!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvGreet"
+        android:layout_width="218dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="307dp"
+        android:text="Hello world!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

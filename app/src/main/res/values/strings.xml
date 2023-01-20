@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Testing</string>
+    <string-array name="state_arrays">
+        <item>Melaka</item>
+        <item>Selangor</item>
+        <item>Johor</item>
+        <item>Negeri Sembilan</item>
+        <item>Pahang</item>
+        <item>Terengganu</item>
+        <item>Kedah</item>
+        <item>Perlis</item>
+    </string-array>
+    <string name="nav_open">Navigation Bar is Opened!</string>
+    <string name="nav_close">Navigation Bar is Closed!</string>
+</resources>
