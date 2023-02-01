@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(),StudentMainActivity.class);
                         startActivity(intent);
                         return true;
+                    case R.id.nav_search:
+                        intent = new Intent(getApplicationContext(),SearchStudentActivity.class);
+                        startActivity(intent);
                     default:
                         return false;
                 }
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -130,4 +134,5 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"This happens when app is about to be destroyed",
                 Toast.LENGTH_SHORT).show();
     }
+    */
 }

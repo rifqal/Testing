@@ -21,6 +21,7 @@ public class Attendance extends SQLiteOpenHelper {
     public static final String colStdGender="stud_gender";
     public static final String colStdState="stud_state";
     public static final String colStdDob="stud_dob";
+    public static final String colStdEmail="stud_email";
 
     static final String strCrtTblStudents = "CREATE TABLE " + tblNameStudent + "("+colStdNo+"INTEGER PRIMARY KEY, "+ colStdName+"TEXT, " +"REAL,"+colStdGender+"TEXT," +colStdState+"TEXT, "+colStdDob+" DATE)";
 
@@ -44,7 +45,7 @@ public class Attendance extends SQLiteOpenHelper {
     }
 
     public float fnInsertStudent(Student student){
-        float retResult = 0;
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(colStdName,student.getStrFullname());
@@ -53,69 +54,75 @@ public class Attendance extends SQLiteOpenHelper {
         values.put(colStdState,student.getStrState());
         values.put(colStdDob,student.getStrBirthdate());
 
-        retResult = db.insert(tblNameStudent,null,values);
+        float retResult = db.insert(tblNameStudent,null,values);
         return retResult;
     }
 
     @SuppressLint("Range")
     public Student fnGetStudent(int intStdNo){
 
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String strSelQry = "SELECT * FROM"+tblNameStudent+"WHERE "+colStdNo+" = '" +intStdNo +"'";
+        Cursor cursor = db.rawQuery(strSelQry, null);
+
         Student student = new Student();
 
-        String strSelQry = "Select * from"+tblNameStudent+"where "+colStdNo+" = " +intStdNo;
-        Cursor cursor = this.getReadableDatabase().rawQuery(strSelQry,null);
 
-        if(cursor!=null){
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
+            int fullnameIndex = cursor.getColumnIndex(colStdName);
+            int studNoIndex = cursor.getColumnIndex(colStdNo);
+            int genderIndex = cursor.getColumnIndex(colStdGender);
+            int stateIndex = cursor.getColumnIndex(colStdState);
+            if (fullnameIndex != -1) {
+                student.setStrFullname(cursor.getString(fullnameIndex));
+            }
+            if (studNoIndex != -1) {
+                student.setStrStudNo(cursor.getString(studNoIndex));
+            }
+            if (genderIndex != -1) {
+                student.setStrGender(cursor.getString(genderIndex));
+            }
+            if (stateIndex != -1) {
+                student.setStrState(cursor.getString(stateIndex));
+            }
         }
-        student.setStrFullname(cursor.getString(cursor.getColumnIndex(colStdName)));
-        student.setStrStudNo(cursor.getString(cursor.getColumnIndex(colStdNo)));
-        student.setStrGender(cursor.getString(cursor.getColumnIndex(colStdGender)));
-        student.setStrState(cursor.getString(cursor.getColumnIndex(colStdState)));
-        student.setStrBirthdate(cursor.getString(cursor.getColumnIndex(colStdDob)));
-
+        cursor.close();
         return student;
     }
 
     @SuppressLint("Range")
     public List<Student> fnGetAllStudents(){
 
-        List<Student> listStd = new ArrayList<Student>();
+        List<Student> listStd = new ArrayList<>();
+        String strSelAll ="SELECT * FROM "+tblNameStudent;
 
-        String strSelAll ="Select * from "+tblNameStudent;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(strSelAll, null);
 
-        Cursor cursor = this.getReadableDatabase().rawQuery(strSelAll,null);
         if(cursor.moveToFirst()){
-            do{
+            do {
                 Student student = new Student();
-
-                student.setStrFullname(cursor.getString(cursor.getColumnIndex(colStdName)));
-                student.setStrStudNo(cursor.getString(cursor.getColumnIndex(colStdNo)));
-                student.setStrGender(cursor.getString(cursor.getColumnIndex(colStdGender)));
-                student.setStrState(cursor.getString(cursor.getColumnIndex(colStdState)));
-                student.setStrBirthdate(cursor.getString(cursor.getColumnIndex(colStdDob)));
-
+                int fullnameIndex = cursor.getColumnIndex(colStdName);
+                int studNoIndex = cursor.getColumnIndex(colStdNo);
+                int genderIndex = cursor.getColumnIndex(colStdGender);
+                int stateIndex = cursor.getColumnIndex(colStdState);
+                if (fullnameIndex != -1) {
+                    student.setStrFullname(cursor.getString(fullnameIndex));
+                }
+                if (studNoIndex != -1) {
+                    student.setStrStudNo(cursor.getString(studNoIndex));
+                }
+                if (genderIndex != -1) {
+                    student.setStrGender(cursor.getString(genderIndex));
+                }
+                if (stateIndex != -1) {
+                    student.setStrState(cursor.getString(stateIndex));
+                }
                 listStd.add(student);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return listStd;
-    }
-
-    public int fnUpdateStudent(Student student){
-        int retResult = 0;
-
-        ContentValues values = new ContentValues();
-        values.put(colStdName,student.getStrFullname());
-        values.put(colStdNo,student.getStrStudNo());
-        values.put(colStdGender,student.getStrGender());
-        values.put(colStdState,student.getStrState());
-        values.put(colStdDob,student.getStrBirthdate());
-
-        String [] args = {String.valueOf(student.getStrStudNo())};
-
-        this.getWritableDatabase().update(tblNameStudent,values,colStdNo+" = ?",args);
-
-        return retResult;
     }
 
 }

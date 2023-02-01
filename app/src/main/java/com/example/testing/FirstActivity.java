@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -36,10 +37,17 @@ public class FirstActivity extends AppCompatActivity {
 
     public void fnGreet(View vw)
     {
-        String strName= edtName.getText().toString();
-        String strAge =edtYear.getText().toString();
-        int age = Integer.parseInt(strAge);//Calendar.YEAR - edtYear.getText();
-        txtvwAge.setText("Hellooo and welcome " + strName + ". You are "+ age +" years old!");
+        if(edtName.getText()!=null||edtYear.getText()!=null)
+        {
+            String strName = edtName.getText().toString();
+            String strAge = edtYear.getText().toString();
+            int age = 2023 - Integer.parseInt(strAge);
+            txtvwAge.setText("Hellooo and welcome " + strName + ". You are " + age + " years old!");
+        }
+        else
+        {
+            Toast.makeText(this,"You cannot leave this field empty!",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void fnThreadActivity(View vw){

@@ -79,6 +79,9 @@ public class SecondActivityCam extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(),StudentMainActivity.class);
                         startActivity(intent);
                         return true;
+                    case R.id.nav_search:
+                        intent = new Intent(getApplicationContext(),SearchStudentActivity.class);
+                        startActivity(intent);
                     default:
                         return false;
                 }

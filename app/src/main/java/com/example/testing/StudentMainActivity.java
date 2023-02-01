@@ -1,7 +1,9 @@
 package com.example.testing;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -32,25 +35,76 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import com.example.testing.Attendance;
+import com.google.android.material.navigation.NavigationView;
 
 public class StudentMainActivity extends AppCompatActivity {
 
     private ActivityStudentMainBinding binding;
     private Student student;
+    private Attendance attendance;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
 
     private ArrayList<Student> students;
     private StudentAdapter adapter;
 
     private DatePickerDialog datePicker;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityStudentMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //binding.fabAdd.setOnClickListener(this::fnAdd);
-        //binding.fabAdd.setOnClickListener(this::fnAddToREST);
+
+        drawerLayout=findViewById(R.id.my_drawer_layout);
+        actionBarDrawerToggle=new ActionBarDrawerToggle(this,drawerLayout,R.string.nav_open,R.string.nav_close);
+        actionBarDrawerToggle.syncState();
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView=findViewById(R.id.nav_menu);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Intent intent;
+                    switch (item.getItemId()){
+                        case R.id.nav_main_activity:
+                            intent = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                            return true;
+                        case R.id.nav_camera_activity:
+                            intent = new Intent(getApplicationContext(),SecondActivityCam.class);
+                            startActivity(intent);
+                            return true;
+                        case R.id.nav_settings:
+                            Toast.makeText(getApplicationContext(),"You navigated to Setting Screen",Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.nav_logout:
+                            Toast.makeText(getApplicationContext(),"You are logged out! See ya!",Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.nav_registration:
+                            intent = new Intent(getApplicationContext(),StudentMainActivity.class);
+                            startActivity(intent);
+                            return true;
+                        case R.id.nav_search:
+                            intent = new Intent(getApplicationContext(),SearchStudentActivity.class);
+                            startActivity(intent);
+                        default:
+                            return false;
+                    }
+                }
+            });
+
+
+
+        binding.fabAdd.setOnClickListener(v -> {
+            fnAdd(v);
+        });
         binding.edtBirthdate.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -66,27 +120,18 @@ public class StudentMainActivity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener(){
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                binding.edtBirthdate.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
+                                binding.edtBirthdate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
                             }
                         },year,month,day);
                 datePicker.show();
             }
         });
 
-        Attendance attendance = new Attendance(this);
+        //attendance = new Attendance(this);
+        databaseHelper = new DatabaseHelper(this);
 
         students = new ArrayList<>();
         adapter = new StudentAdapter(getLayoutInflater(),students);
-
-        attendance.fnInsertStudent(student);
-
-        binding.fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fnAdd(view);
-
-            }
-        });
 
         binding.rcvStud.setAdapter(adapter);
         binding.rcvStud.setLayoutManager(new LinearLayoutManager(this));
@@ -109,6 +154,7 @@ public class StudentMainActivity extends AppCompatActivity {
 
     private void fnAdd(View view)
     {
+        /*
         String fullName= binding.edtFullName.getText().toString();
         String studNo = binding.edtStudNum.getText().toString();
         String email = binding.edtEmail.getText().toString();
@@ -122,13 +168,42 @@ public class StudentMainActivity extends AppCompatActivity {
             gender=binding.rbFemale.getText().toString();
 
         student = new Student(fullName,studNo,email,gender,birth,state);
+        long id = databaseHelper.saveData(student);
 
-        students.add(student);
-        adapter.notifyItemInserted(students.size() );
+        if (id == -1) {
+            Toast.makeText(this, "Error inserting data", Toast.LENGTH_SHORT).show();
+        } else {
+            students.add(student);
+            adapter.notifyItemInserted(students.size());
+            Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
+        }
 
+         */
+        String fullname = binding.edtFullName.getText().toString();
+        String studNo = binding.edtStudNum.getText().toString();
+        String email = binding.edtEmail.getText().toString();
+        String birth = binding.edtBirthdate.getText().toString();
+        String gender = "";
+        String state = binding.spnState.getSelectedItem().toString();
+
+        if(binding.rbMale.isChecked())
+            gender = binding.rbMale.getText().toString();
+        else if(binding.rbFemale.isChecked())
+            gender = binding.rbFemale.getText().toString();
+
+        student = new Student(fullname, studNo, email, gender, birth, state);
+        long id = databaseHelper.saveData(student);
+
+        if (id == -1) {
+            Toast.makeText(this, "Error inserting data", Toast.LENGTH_SHORT).show();
+        } else {
+            students.add(student);
+            adapter.notifyItemInserted(students.size());
+            Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void fnAddToREST(View view){
+    private void fnAddToREST(){
 
         String strURL = "http://192.168.171.1/RESTAPI/rest_api.php";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -148,7 +223,7 @@ public class StudentMainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(), "Cannot Save!", Toast.LENGTH_SHORT).show();
             }
         })
         {
@@ -167,7 +242,7 @@ public class StudentMainActivity extends AppCompatActivity {
                 else if(binding.rbFemale.isChecked())
                     gender=binding.rbFemale.getText().toString();
 
-                Map<String,String> params = new HashMap<String,String>();
+                Map<String,String> params = new HashMap<>();
                 params.put("selectFn","fnSaveData");
                 params.put("studName",fullname);
                 params.put("studGender",gender);
@@ -181,5 +256,14 @@ public class StudentMainActivity extends AppCompatActivity {
     requestQueue.add(stringRequest);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
